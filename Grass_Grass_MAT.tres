@@ -1,0 +1,107 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://cogj0gq4fn7j7"]
+
+[ext_resource type="Texture2D" uid="uid://kgqtqn3w431e" path="res://grass_Grass_MAT_Base_Color.png" id="1_t8tut"]
+[ext_resource type="Texture2D" uid="uid://3accvwsavack" path="res://GrassAlpha.tga.png" id="2_ye1f3"]
+
+[sub_resource type="Shader" id="Shader_t8tut"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_prepass_alpha, cull_back, diffuse_burley, specular_schlick_ggx;
+
+// … aquí van todas tus uniforms originales …
+
+// — Propiedades de viento —
+uniform vec3  wind_direction   = vec3(1.0, 0.0, 0.0);  // eje del viento
+uniform float wind_strength    : hint_range(0.0, 2.0)  = 0.1;  // amplitud
+uniform float wind_speed       : hint_range(0.0, 5.0)  = 1.0;  // oscilación temporal
+uniform float wind_frequency   : hint_range(0.0, 10.0) = 2.0;  // variación espacial
+uniform float wind_near_dist   : hint_range(0.0, 50.0) = 5.0;  // inicio del efecto
+uniform float wind_far_dist    : hint_range(0.0,200.0) = 50.0; // fin del efecto
+
+
+// Color y texturas
+uniform vec4 albedo               : source_color;
+uniform sampler2D texture_albedo  : source_color, filter_linear_mipmap, repeat_enable;
+uniform sampler2D texture_alpha   : hint_default_white, filter_linear_mipmap, repeat_enable;
+
+// Propiedades PBR
+uniform float roughness           : hint_range(0.0, 1.0);
+uniform sampler2D texture_metallic: hint_default_white, filter_linear_mipmap, repeat_enable;
+uniform vec4 metallic_texture_channel;
+uniform sampler2D texture_roughness: hint_roughness_r, filter_linear_mipmap, repeat_enable;
+uniform float specular            : hint_range(0.0, 1.0, 0.01);
+uniform float metallic            : hint_range(0.0, 1.0, 0.01);
+
+// Transformación UV
+uniform vec2 uv_scale             = vec2(1.0);
+uniform vec2 uv_offset            = vec2(0.0);
+
+// Umbral de recorte alpha
+uniform float alpha_cutoff        : hint_range(0.0,1.0) = 0.1;
+
+
+void vertex() {
+    // Transformación UV (igual que antes)
+    UV = UV * uv_scale + uv_offset;
+
+    // — Fase del viento: temporal + espacial —
+    float phase = TIME * wind_speed + dot(UV, vec2(wind_frequency));  
+    float sway_val = sin(phase);
+
+    // — Distancia al cámara en espacio vista —
+    // En Godot 4.x, VIEW_MATRIX es la matriz World→View :contentReference[oaicite:1]{index=1}
+    vec3 view_pos = (VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz;              
+    float dist = abs(view_pos.z);
+
+    // — Factor depth_t: 0 en near_dist → 1 en far_dist —
+    float depth_t = clamp((dist - wind_near_dist) / (wind_far_dist - wind_near_dist), 0.0, 1.0);
+
+    // — Atenuación progresiva y desplazamiento final —
+    float sway = sway_val * wind_strength * (1.0 - depth_t);
+    VERTEX += normalize(wind_direction) * sway;
+}
+
+void fragment() {
+    vec2 uv = UV;
+
+    // — Albedo y alpha —
+    vec4 alb_tex = texture(texture_albedo, uv);
+    float a     = texture(texture_alpha,  uv).r;
+    if (a < alpha_cutoff) {
+        discard;
+    }
+    ALBEDO = albedo.rgb * alb_tex.rgb;
+    ALPHA  = a;
+
+    // — Metallic —
+    float m_tex = dot(texture(texture_metallic, uv), metallic_texture_channel);
+    METALLIC    = m_tex * metallic;
+
+    // — Specular —
+    SPECULAR    = specular;
+
+    // — Roughness —
+    float r_tex = texture(texture_roughness, uv).r;
+    ROUGHNESS   = r_tex * roughness;
+}
+"
+
+[resource]
+resource_name = "Grass:Grass_MAT"
+render_priority = 0
+shader = SubResource("Shader_t8tut")
+shader_parameter/wind_direction = Vector3(1, 0, 0)
+shader_parameter/wind_strength = 0.1
+shader_parameter/wind_speed = 1.0
+shader_parameter/wind_frequency = 2.0
+shader_parameter/wind_near_dist = 8.788
+shader_parameter/wind_far_dist = 50.0
+shader_parameter/albedo = Color(0.901208, 0.921916, 0.848436, 1)
+shader_parameter/texture_albedo = ExtResource("1_t8tut")
+shader_parameter/texture_alpha = ExtResource("2_ye1f3")
+shader_parameter/roughness = 0.571
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
+shader_parameter/specular = 0.42
+shader_parameter/metallic = 0.0
+shader_parameter/uv_scale = Vector2(1, 1)
+shader_parameter/uv_offset = Vector2(0, 0)
+shader_parameter/alpha_cutoff = 0.1
