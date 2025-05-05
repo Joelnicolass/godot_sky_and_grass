@@ -1,31 +1,28 @@
-[gd_scene load_steps=37 format=3 uid="uid://cddlbjcwk5mqt"]
+[gd_scene load_steps=22 format=3 uid="uid://cddlbjcwk5mqt"]
 
 [ext_resource type="Shader" uid="uid://hbqxu6asnxcb" path="res://sky.gdshader" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://diewyeacbwpm0" path="res://fps.gd" id="2_0xm2m"]
-[ext_resource type="PackedScene" uid="uid://cbpoiqi3ybh5e" path="res://map.blend" id="3_h2yge"]
-[ext_resource type="Script" uid="uid://cqmvoragrhoku" path="res://addons/proton_scatter/src/scatter.gd" id="4_ycdy4"]
-[ext_resource type="Script" uid="uid://ciraxm33pqpvq" path="res://addons/proton_scatter/src/stack/modifier_stack.gd" id="5_w48qg"]
-[ext_resource type="Script" uid="uid://b4n1f7or3o6b8" path="res://addons/proton_scatter/src/modifiers/base_modifier.gd" id="6_vivmo"]
-[ext_resource type="Script" uid="uid://btcd8341t648k" path="res://addons/proton_scatter/src/modifiers/create_inside_random.gd" id="7_2cqfq"]
-[ext_resource type="Script" uid="uid://c77d15arf4ht8" path="res://addons/proton_scatter/src/modifiers/randomize_transforms.gd" id="8_yaehf"]
-[ext_resource type="Script" uid="uid://dy4s7udd6ux1k" path="res://addons/proton_scatter/src/modifiers/relax.gd" id="9_074og"]
-[ext_resource type="Script" uid="uid://bbhhj6e1hsya7" path="res://addons/proton_scatter/src/modifiers/project_on_geometry.gd" id="10_cegan"]
-[ext_resource type="Script" uid="uid://c7gmeaa68tjbi" path="res://addons/proton_scatter/src/scatter_item.gd" id="11_82xsv"]
-[ext_resource type="Script" uid="uid://d3bhydd058oju" path="res://addons/proton_scatter/src/scatter_shape.gd" id="12_getpj"]
-[ext_resource type="Material" uid="uid://cogj0gq4fn7j7" path="res://Grass_Grass_MAT.tres" id="12_w48qg"]
-[ext_resource type="Script" uid="uid://bs85tilfmf7cd" path="res://addons/proton_scatter/src/shapes/sphere_shape.gd" id="13_ryguw"]
+[ext_resource type="Script" uid="uid://b47pdgbhlwrmp" path="res://mesh_instance_3d.gd" id="2_w48qg"]
+[ext_resource type="Script" uid="uid://miqfhrrh5v12" path="res://grass_controller.gd" id="5_lquwl"]
+[ext_resource type="ArrayMesh" uid="uid://durmih4ckgmdg" path="res://grass_high.obj" id="6_7mycd"]
+[ext_resource type="PackedScene" uid="uid://b6crtd6ejj842" path="res://map_her.tscn" id="7_5vw27"]
+[ext_resource type="Shader" uid="uid://b0orpsee3mlp2" path="res://grass_new.gdshader" id="7_272bh"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_ig7tw"]
-frequency = 0.0073
+frequency = 0.0098
+offset = Vector3(-228.86, 0, 0)
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0xm2m"]
 noise = SubResource("FastNoiseLite_ig7tw")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_h2yge"]
-frequency = 0.0013
+frequency = 0.0021
 offset = Vector3(-172.83, 0, 0)
+fractal_type = 2
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_1bvp3"]
+width = 1024
+height = 1024
 in_3d_space = true
 seamless = true
 seamless_blend_skirt = 0.795
@@ -48,12 +45,12 @@ shader_parameter/clouds_samples = 16
 shader_parameter/shadow_sample = 4
 shader_parameter/clouds_density = 0.5
 shader_parameter/clouds_scale = 1.0
-shader_parameter/clouds_smoothness = 0.035
+shader_parameter/clouds_smoothness = 0.1
 shader_parameter/clouds_light_color = Color(0.453393, 0.596928, 0.639059, 1)
 shader_parameter/clouds_shadow_intensity = 1.0
 shader_parameter/high_clouds_sampler = SubResource("NoiseTexture2D_h2yge")
 shader_parameter/high_clouds_density = 1.0
-shader_parameter/top_color = Color(0.865671, 0.665591, 0.546859, 1)
+shader_parameter/top_color = Color(0.635294, 0.258824, 0.411765, 1)
 shader_parameter/bottom_color = Color(0.34902, 0.431373, 0.431373, 1)
 shader_parameter/sun_scatter = Color(0.854902, 1, 1, 1)
 shader_parameter/astro_tint = Color(1, 1, 1, 1)
@@ -69,142 +66,74 @@ sky_material = SubResource("ShaderMaterial_0xm2m")
 [sub_resource type="Environment" id="Environment_1bvp3"]
 background_mode = 2
 sky = SubResource("Sky_h2yge")
+ambient_light_source = 3
+reflected_light_source = 2
+ssao_enabled = true
+ssao_radius = 0.55
+ssao_intensity = 4.2
+ssao_power = 5.5982
+glow_enabled = true
+glow_normalized = true
+glow_bloom = 0.05
+glow_blend_mode = 1
+fog_enabled = true
+fog_sun_scatter = 1.0
+fog_aerial_perspective = 1.0
 volumetric_fog_enabled = true
-volumetric_fog_density = 0.1
-volumetric_fog_albedo = Color(0.62227, 0.38156, 0.56857, 1)
-volumetric_fog_emission = Color(0.646222, 0.790321, 0.9373, 1)
-volumetric_fog_sky_affect = 0.0
+volumetric_fog_density = 0.0144
+volumetric_fog_albedo = Color(0.928361, 0.743612, 7.70092e-07, 1)
+volumetric_fog_emission = Color(0.288444, 0.412876, 0.392115, 1)
+volumetric_fog_anisotropy = 0.7
+volumetric_fog_sky_affect = 0.2
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_w48qg"]
 
-[sub_resource type="Resource" id="Resource_d13ii"]
-script = ExtResource("7_2cqfq")
-amount = 10000
-enabled = true
-override_global_seed = false
-custom_seed = 0
-restrict_height = true
-reference_frame = 1
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_7mycd"]
+dof_blur_far_enabled = true
+dof_blur_far_distance = 70.0
 
-[sub_resource type="Resource" id="Resource_1u8w0"]
-script = ExtResource("8_yaehf")
-position = Vector3(0.15, 0, 0.15)
-rotation = Vector3(20, 360, 20)
-scale = Vector3(0.1, 0.1, 0.1)
-enabled = true
-override_global_seed = false
-custom_seed = 0
-restrict_height = false
-reference_frame = 2
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_272bh"]
 
-[sub_resource type="Resource" id="Resource_0odxb"]
-script = ExtResource("9_074og")
-iterations = 3
-offset_step = 0.2
-consecutive_step_multiplier = 0.75
-use_computeshader = true
-enabled = true
-override_global_seed = false
-custom_seed = 0
-restrict_height = true
-reference_frame = 0
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5vw27"]
 
-[sub_resource type="Resource" id="Resource_lswn8"]
-script = ExtResource("10_cegan")
-ray_direction = Vector3(0, -1, 0)
-ray_length = 5.0
-ray_offset = 5.0
-remove_points_on_miss = false
-align_with_collision_normal = false
-max_slope = 90.0
-collision_mask = 1
-exclude_mask = 0
-enabled = true
-override_global_seed = false
-custom_seed = 0
-restrict_height = false
-reference_frame = 0
-
-[sub_resource type="Resource" id="Resource_a6jrf"]
-script = ExtResource("5_w48qg")
-stack = Array[ExtResource("6_vivmo")]([SubResource("Resource_d13ii"), SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8")])
-
-[sub_resource type="Resource" id="Resource_g8bsm"]
-script = ExtResource("13_ryguw")
-radius = 2.0
-
-[sub_resource type="Resource" id="Resource_vivmo"]
-script = ExtResource("7_2cqfq")
-amount = 10000
-enabled = true
-override_global_seed = false
-custom_seed = 0
-restrict_height = true
-reference_frame = 1
-
-[sub_resource type="Resource" id="Resource_2cqfq"]
-script = ExtResource("8_yaehf")
-position = Vector3(0.15, 0, 0.15)
-rotation = Vector3(20, 360, 20)
-scale = Vector3(0.1, 0.1, 0.1)
-enabled = true
-override_global_seed = false
-custom_seed = 0
-restrict_height = false
-reference_frame = 2
-
-[sub_resource type="Resource" id="Resource_yaehf"]
-script = ExtResource("9_074og")
-iterations = 3
-offset_step = 0.2
-consecutive_step_multiplier = 0.75
-use_computeshader = true
-enabled = true
-override_global_seed = false
-custom_seed = 0
-restrict_height = true
-reference_frame = 0
-
-[sub_resource type="Resource" id="Resource_074og"]
-script = ExtResource("10_cegan")
-ray_direction = Vector3(0, -1, 0)
-ray_length = 5.0
-ray_offset = 5.0
-remove_points_on_miss = false
-align_with_collision_normal = false
-max_slope = 90.0
-collision_mask = 1
-exclude_mask = 0
-enabled = true
-override_global_seed = false
-custom_seed = 0
-restrict_height = false
-reference_frame = 0
-
-[sub_resource type="Resource" id="Resource_cegan"]
-script = ExtResource("5_w48qg")
-stack = Array[ExtResource("6_vivmo")]([SubResource("Resource_vivmo"), SubResource("Resource_2cqfq"), SubResource("Resource_yaehf"), SubResource("Resource_074og")])
-
-[sub_resource type="Resource" id="Resource_82xsv"]
-script = ExtResource("13_ryguw")
-radius = 2.0
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5vw27"]
+render_priority = 0
+shader = ExtResource("7_272bh")
+shader_parameter/clumping_factor = 0.5
+shader_parameter/clump_noise = SubResource("NoiseTexture2D_272bh")
+shader_parameter/wind_speed = 1.237
+shader_parameter/wind_noise = SubResource("NoiseTexture2D_5vw27")
+shader_parameter/terrain_size = Vector2(0, 0)
+shader_parameter/terrain_max_height = 0.0
+shader_parameter/camera_near = 0.0
+shader_parameter/camera_far = 0.0
+shader_parameter/base_color = Color(0.05, 0.2, 0.01, 1)
+shader_parameter/tip_color = Color(0.5, 0.5, 0.1, 1)
+shader_parameter/subsurface_scattering_color = Color(1, 0.75, 0.1, 1)
 
 [node name="Node3D" type="Node3D"]
+script = ExtResource("5_lquwl")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_1bvp3")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.691534, 0.434931, -0.576728, 0.554795, 0.191496, 0.809649, 0.462583, -0.879866, -0.108871, 0, 0, 0)
-light_color = Color(1, 0.854902, 0, 1)
+transform = Transform3D(-0.532521, 0.434755, 0.72623, 0.6896, 0.720356, 0.0744228, -0.490789, 0.54044, -0.683411, -10.9816, 41.0888, 10.7222)
+light_color = Color(1, 0.766187, 0.569705, 1)
+light_angular_distance = 15.04
 shadow_enabled = true
+directional_shadow_mode = 0
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.999927, 0.0120599, 0, -0.0120599, 0.999927, -16.221, 21.0273, 2.06784)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.8827, 20.2292, 0)
+[node name="Player" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(-0.283831, 0, 0.958874, 0, 1, 0, -0.958874, 0, -0.283831, -1.26072, 4.50984, 10.1507)
 mesh = SubResource("CapsuleMesh_w48qg")
+script = ExtResource("2_w48qg")
+
+[node name="Camera3D" type="Camera3D" parent="Player"]
+transform = Transform3D(-0.834734, -0.00664085, 0.550615, -5.43045e-11, 0.999927, 0.0120599, -0.550655, 0.0100668, -0.834673, 1.04567, 1.20921, -2.6191)
+attributes = SubResource("CameraAttributesPractical_7mycd")
+fov = 90.0
 
 [node name="DEBUG" type="CanvasLayer" parent="."]
 
@@ -227,43 +156,22 @@ text = "FPS"
 horizontal_alignment = 2
 script = ExtResource("2_0xm2m")
 
-[node name="map" parent="." instance=ExtResource("3_h2yge")]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, -13.9307, 0.282668)
+[node name="GrassHigh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.815, 0, -5.773)
+mesh = ExtResource("6_7mycd")
+surface_material_override/0 = SubResource("ShaderMaterial_5vw27")
 
-[node name="ProtonScatter" type="Node3D" parent="map"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.82256, 0, 0)
-script = ExtResource("4_ycdy4")
-modifier_stack = SubResource("Resource_a6jrf")
-Performance/use_chunks = true
-Performance/chunk_dimensions = Vector3(5, 5, 5)
-metadata/_custom_type_script = "uid://cqmvoragrhoku"
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="ScatterItem" type="Node3D" parent="map/ProtonScatter"]
-script = ExtResource("11_82xsv")
-source_scale_multiplier = 0.3
-override_material = ExtResource("12_w48qg")
-path = "uid://c56pdxxqadwhq"
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 658.0
+offset_bottom = 572.0
 
-[node name="ScatterShape" type="Node3D" parent="map/ProtonScatter"]
-transform = Transform3D(1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, 0, 3.26469, 0)
-script = ExtResource("12_getpj")
-shape = SubResource("Resource_g8bsm")
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_right = 502.0
+offset_bottom = 472.0
 
-[node name="ProtonScatter2" type="Node3D" parent="map"]
-transform = Transform3D(-0.0947338, 0, -0.995503, 0, 1, 0, 0.995503, 0, -0.0947338, -2.82256, 0, -4.50256)
-script = ExtResource("4_ycdy4")
-modifier_stack = SubResource("Resource_cegan")
-Performance/use_chunks = true
-Performance/chunk_dimensions = Vector3(5, 5, 5)
-metadata/_custom_type_script = "uid://cqmvoragrhoku"
-
-[node name="ScatterItem" type="Node3D" parent="map/ProtonScatter2"]
-script = ExtResource("11_82xsv")
-source_scale_multiplier = 0.3
-override_material = ExtResource("12_w48qg")
-path = "uid://c56pdxxqadwhq"
-
-[node name="ScatterShape" type="Node3D" parent="map/ProtonScatter2"]
-transform = Transform3D(1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, 0, 3.26469, 0)
-script = ExtResource("12_getpj")
-shape = SubResource("Resource_82xsv")
+[node name="map_fbx" parent="." instance=ExtResource("7_5vw27")]

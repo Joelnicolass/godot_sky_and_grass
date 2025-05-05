@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://b6crtd6ejj842"]
+
+[ext_resource type="PackedScene" uid="uid://dx27qk7owbsac" path="res://map_fbx.fbx" id="1_pvwfv"]
+[ext_resource type="Shader" uid="uid://yr34xiq1c8yn" path="res://vertex.tres" id="2_ol5hu"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vwh7y"]
+render_priority = 0
+shader = ExtResource("2_ol5hu")
+
+[node name="map_fbx" instance=ExtResource("1_pvwfv")]
+
+[node name="map" parent="." index="0"]
+surface_material_override/0 = SubResource("ShaderMaterial_vwh7y")

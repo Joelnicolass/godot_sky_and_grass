@@ -1,14 +1,12 @@
-[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://cyeunvpmdoi4a"]
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://b1qdoumk2ei0p"]
 
-[ext_resource type="Texture2D" uid="uid://b0743q1p2qxnx" path="res://map_grass_01_color_2k.png" id="1_qyx7w"]
-[ext_resource type="Texture2D" uid="uid://c1i0m5rbt3kbp" path="res://map_grass_01_normal_gl_2k.png" id="2_yawai"]
+[ext_resource type="Shader" uid="uid://yr34xiq1c8yn" path="res://vertex.tres" id="1_u8eis"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u8eis"]
+render_priority = 0
+shader = ExtResource("1_u8eis")
 
 [resource]
 resource_name = "ant01.002_NormalOnly"
-cull_mode = 2
-albedo_texture = ExtResource("1_qyx7w")
-roughness = 0.759091
-normal_enabled = true
-normal_texture = ExtResource("2_yawai")
-uv1_scale = Vector3(-100, -100, 1)
-uv1_offset = Vector3(0, 101, 0)
+next_pass = SubResource("ShaderMaterial_u8eis")
+vertex_color_use_as_albedo = true

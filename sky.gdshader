@@ -174,7 +174,7 @@ void sky() {
 	float bottom_mask = smoothstep(0.5, 0.45, SKY_COORDS.y);
 	// Displacing Y on the division side here warps the texture giving us "curvature" over a flat plane of a sky
     vec3 dir = vec3(EYEDIR.xz/(EYEDIR.y + 0.1), 0.0);
-	
+
 	//vec3 dir = direction_to_matrix(LIGHT0_DIRECTION) * EYEDIR;
 	vec2 astro_uv = (-(dir.xy / dir.z) * astro_scale) + vec2(0.5);
 	float astro_mask = ceil(
@@ -202,7 +202,7 @@ void sky() {
 		sky_color += get_shooting_star(EYEDIR) * shooting_stars_intensity * shooting_star_tint;
 	}
 
-	
+
 	// This can be used to limit reflection intensity, if the sun's intensity goes
    // over 1 its HDR and can bleed through shadows badly and muddy shadows
    float working_astro_intensity = astro_intensity;
@@ -216,8 +216,8 @@ void sky() {
 	//sky_color = mix(sky_color, astro_color.rgb * astro_intensity * astro_tint, astro_color.a * astro_mask * bottom_mask);
 
 	// Add high clouds
-	
-	
+
+
 
 	if(high_clouds_density > 0.0){
 		vec2 high_clouds_uv = (EYEDIR.xz / clamp(EYEDIR.y + 0.1, 0.0, 1.0)) * 0.25 + TIME * 0.001;
