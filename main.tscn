@@ -126,7 +126,7 @@ directional_shadow_mode = 0
 
 [node name="Player" type="MeshInstance3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(-0.283831, 0, 0.958874, 0, 1, 0, -0.958874, 0, -0.283831, -1.26072, 4.50984, 10.1507)
+transform = Transform3D(-0.283831, 0, 0.958874, 0, 1, 0, -0.958874, 0, -0.283831, -1.26072, 4.50984, 11.7449)
 mesh = SubResource("CapsuleMesh_w48qg")
 script = ExtResource("2_w48qg")
 
