@@ -2,9 +2,6 @@
 shader_type spatial;
 render_mode shadows_disabled, ensure_correct_normals;
 
-global uniform sampler2D heightmap : filter_linear, repeat_enable;
-global uniform float heightmap_scale;
-
 uniform vec3 base_color : source_color = vec3(0.05,0.2,0.01);
 uniform vec3 tip_color : source_color = vec3(0.5,0.5,0.1);
 uniform vec3 subsurface_scattering_color : source_color = vec3(1.0,0.75,0.1);
@@ -13,12 +10,6 @@ varying vec3 vertex_world;
 
 float ease_in_quadratic(float x) {
 	return x*x;
-}
-
-void vertex() {
-	float heightmap_offset = (texture(heightmap, VERTEX.xz / vec2(textureSize(heightmap, 0))).x - 0.5) * heightmap_scale;
-	VERTEX.y += heightmap_offset;
-	vertex_world = VERTEX;
 }
 
 void fragment() {

@@ -7,21 +7,21 @@ const GRASS_MAT := preload('res://grass_mat_instance.tres')
 
 const RED_THRESHOLD := 0.5
 const GRID_SIZE := 20.0
-const INSTANCE_COUNT_HIGH := 100000
-const INSTANCE_COUNT_LOW := 10000
+const INSTANCE_COUNT_HIGH := 10000
+const INSTANCE_COUNT_LOW := 5000
 
 # radio máximo de jitter en XZ (en metros)
 const JITTER_RADIUS := 0.6
 
 var cell_to_vertices := {}
-var high_cells_instances := {}
-var low_cells_instances := {}
+var high_cells_multimesh := {}
+var low_cells_multimesh := {}
 
 # contenedor donde irá TODO el grass
 var grass_root: Node3D
 
 @onready var terrain := $map_fbx/map
-@onready var player := $Player
+@onready var player: CharacterBody3D = $Player
 
 func _ready() -> void:
 	# 1) Creamos el nodo contenedor y lo parentamos al terreno
@@ -49,7 +49,9 @@ func _group_vertices_by_cell() -> void:
 	mdt.clear()
 
 func _process(delta: float) -> void:
-	var p = player.global_position
+	if not player.is_inside_tree():
+		return
+	var p := player.global_position
 	var pc = Vector2(floor(p.x / GRID_SIZE), floor(p.z / GRID_SIZE))
 
 	# calculamos sets deseados
@@ -61,56 +63,55 @@ func _process(delta: float) -> void:
 			if c != pc:
 				desired_low.append(c)
 
-	# — Demote High → Low
-	for cell in high_cells_instances.keys():
+		# — Demote High → Low
+	for cell in high_cells_multimesh.keys():
 		if cell not in desired_high:
-			for mi in high_cells_instances[cell]:
-				mi.mesh = GRASS_MESH_LOW
-			low_cells_instances[cell] = high_cells_instances[cell]
-			high_cells_instances.erase(cell)
+			var mmi = high_cells_multimesh[cell]
+			mmi.multimesh.mesh = GRASS_MESH_LOW
+			low_cells_multimesh[cell] = mmi
+			high_cells_multimesh.erase(cell)
 
 	# — Remove Low fuera de rango
-	for cell in low_cells_instances.keys():
+	for cell in low_cells_multimesh.keys():
 		if cell not in desired_low:
-			for mi in low_cells_instances[cell]:
-				mi.queue_free()
-			low_cells_instances.erase(cell)
+			low_cells_multimesh[cell].queue_free()
+			low_cells_multimesh.erase(cell)
 
 	# — Add High nuevos
 	for cell in desired_high:
-		if not high_cells_instances.has(cell):
-			high_cells_instances[cell] = _instantiate_in_cell(cell, GRASS_MESH_HIGH, INSTANCE_COUNT_HIGH)
+		if not high_cells_multimesh.has(cell):
+			high_cells_multimesh[cell] = _instantiate_in_cell_multimesh(cell, GRASS_MESH_HIGH, INSTANCE_COUNT_HIGH)
 
 	# — Add Low nuevos (sin pisar High)
 	for cell in desired_low:
-		if not high_cells_instances.has(cell) and not low_cells_instances.has(cell):
-			low_cells_instances[cell] = _instantiate_in_cell(cell, GRASS_MESH_LOW, INSTANCE_COUNT_LOW)
+		if not high_cells_multimesh.has(cell) and not low_cells_multimesh.has(cell):
+			low_cells_multimesh[cell] = _instantiate_in_cell_multimesh(cell, GRASS_MESH_LOW, INSTANCE_COUNT_LOW)
 
-func _instantiate_in_cell(cell: Vector2, mesh: Mesh, max_count: int) -> Array:
-	var res := []
+
+func _instantiate_in_cell_multimesh(cell: Vector2, mesh: Mesh, max_count: int) -> MultiMeshInstance3D:
+	var mmi := MultiMeshInstance3D.new()
+	var mm := MultiMesh.new()
+	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.mesh = mesh
+	mm.instance_count = max_count
+	mmi.multimesh = mm
+	mmi.material_override = GRASS_MAT
+
+	add_child(mmi)
+
 	if not cell_to_vertices.has(cell):
-		return res
-	# duplicamos y desordenamos listas
-	var verts = cell_to_vertices[cell].duplicate()
-	verts.shuffle()
-	var count = min(max_count, verts.size())
+		return mmi
 
-	for i in range(count):
-		var base_pos = verts[i]
-		# calculamos jitter en XZ
+	var verts = cell_to_vertices[cell]
+	var n = verts.size()
+	for i in range(max_count):
+		var base_pos = verts[randi() % n]
 		var jitter = Vector3(
 			randf_range(-JITTER_RADIUS, JITTER_RADIUS),
 			0,
 			randf_range(-JITTER_RADIUS, JITTER_RADIUS)
 		)
 		var final_pos = base_pos + jitter
-
-		var mi = MeshInstance3D.new()
-		mi.mesh = mesh
-		mi.material_override = GRASS_MAT
-		# lo parentamos al contenedor, luego asignamos transform local
-		#grass_root.add_child(mi)
-		add_child(mi)
-		mi.global_transform = Transform3D(Basis(), final_pos)
-		res.append(mi)
-	return res
+		var xform = Transform3D(Basis(), final_pos)
+		mm.set_instance_transform(i, xform)
+	return mmi

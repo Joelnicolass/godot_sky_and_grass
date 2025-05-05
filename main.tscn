@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://cddlbjcwk5mqt"]
+[gd_scene load_steps=23 format=3 uid="uid://cddlbjcwk5mqt"]
 
 [ext_resource type="Shader" uid="uid://hbqxu6asnxcb" path="res://sky.gdshader" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://diewyeacbwpm0" path="res://fps.gd" id="2_0xm2m"]
@@ -86,11 +86,13 @@ volumetric_fog_emission = Color(0.288444, 0.412876, 0.392115, 1)
 volumetric_fog_anisotropy = 0.7
 volumetric_fog_sky_affect = 0.2
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_w48qg"]
-
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_7mycd"]
 dof_blur_far_enabled = true
 dof_blur_far_distance = 70.0
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_272bh"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_5vw27"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_272bh"]
 
@@ -124,16 +126,21 @@ light_angular_distance = 15.04
 shadow_enabled = true
 directional_shadow_mode = 0
 
-[node name="Player" type="MeshInstance3D" parent="."]
+[node name="Player" type="CharacterBody3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(-0.283831, 0, 0.958874, 0, 1, 0, -0.958874, 0, -0.283831, -1.26072, 4.50984, 11.7449)
-mesh = SubResource("CapsuleMesh_w48qg")
+transform = Transform3D(0.939788, 0, -0.341758, 0, 1, 0, 0.341758, 0, 0.939788, 1.66064, 5.892, -14.4803)
 script = ExtResource("2_w48qg")
 
 [node name="Camera3D" type="Camera3D" parent="Player"]
-transform = Transform3D(-0.834734, -0.00664085, 0.550615, -5.43045e-11, 0.999927, 0.0120599, -0.550655, 0.0100668, -0.834673, 1.04567, 1.20921, -2.6191)
+transform = Transform3D(0.999261, 0.0382637, 0.00358753, -0.0382637, 0.98184, 0.185814, 0.00358754, -0.185814, 0.982579, -0.403589, 0.769263, 2.17292)
 attributes = SubResource("CameraAttributesPractical_7mycd")
 fov = 90.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("CapsuleShape3D_272bh")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+mesh = SubResource("CapsuleMesh_5vw27")
 
 [node name="DEBUG" type="CanvasLayer" parent="."]
 

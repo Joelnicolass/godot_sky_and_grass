@@ -1,8 +1,11 @@
-[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://c5jwj4pe5n4dw"]
+[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://c5jwj4pe5n4dw"]
 
-[ext_resource type="Shader" uid="uid://cwsup2s47v7sq" path="res://grass.gdshader" id="1_k1in3"]
+[ext_resource type="Shader" uid="uid://b4k7ssr0og20i" path="res://grass.gdshader" id="1_k1in3"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_k1in3"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kek77"]
+noise = SubResource("FastNoiseLite_k1in3")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_4c57u"]
 frequency = 0.0069
@@ -13,9 +16,9 @@ noise = SubResource("FastNoiseLite_4c57u")
 [resource]
 render_priority = 0
 shader = ExtResource("1_k1in3")
-shader_parameter/clumping_factor = 0.5
+shader_parameter/clumping_factor = 0.375
 shader_parameter/clump_noise = SubResource("NoiseTexture2D_kek77")
-shader_parameter/wind_speed = 3.731
+shader_parameter/wind_speed = 1.527
 shader_parameter/wind_noise = SubResource("NoiseTexture2D_efxa6")
 shader_parameter/base_color = Color(0.05, 0.2, 0.01, 1)
 shader_parameter/tip_color = Color(0.5, 0.5, 0.1, 1)
