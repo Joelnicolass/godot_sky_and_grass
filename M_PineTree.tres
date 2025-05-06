@@ -1,8 +1,71 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cccgexbowuln2"]
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://cccgexbowuln2"]
 
-[ext_resource type="Shader" uid="uid://02tua3ybjvqj" path="res://alpha.tres" id="1_8e13g"]
+[ext_resource type="Texture2D" uid="uid://c4kehaxc2eflb" path="res://T_PineBranch_Diffuse.png" id="1_bkc36"]
+[ext_resource type="Texture2D" uid="uid://c7521iwfpl8ec" path="res://T_PineBranch_Mask.png" id="2_hk14k"]
+
+[sub_resource type="Shader" id="Shader_q1hdr"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_disabled, diffuse_lambert, specular_schlick_ggx, depth_prepass_alpha;
+
+uniform sampler2D tex_diffuse;
+uniform sampler2D tex_mask;
+uniform vec3  subsurface_scattering_color : source_color = vec3(1.0,0.75,0.1);
+
+// Parámetros de viento:
+uniform float wind_strength      = 0.1;   // Cuánto desplaza el viento
+uniform float wind_speed         = 1.0;   // Velocidad de la onda
+uniform float wind_scale         = 2.0;   // Frecuencia vertical de la onda
+uniform vec3  wind_direction     = vec3(1.0, 0.0, 0.2); // Dirección del viento
+// Parámetros de altura para limitar el efecto:
+uniform float height_start       = 0.5;   // Y local donde empieza el viento
+uniform float height_end         = 2.0;   // Y local donde el viento ya alcanza 1.0
+
+void vertex() {
+    // 1. Máscara roja del vértice:
+    float vmask = COLOR.r;
+
+    // 2. Máscara de altura (0 = abajo de height_start, 1 = arriba de height_end):
+    float hmask = clamp((VERTEX.y - height_start) / (height_end - height_start), 0.0, 1.0);
+
+    // 3. Combinar ambas máscaras:
+    float mask = vmask * hmask;
+
+    // 4. Calcular fase y onda:
+    float phase = VERTEX.y * wind_scale + TIME * wind_speed;
+    float wave  = sin(phase);
+
+    // 5. Desplazamiento:
+    vec3 offset = wind_direction * (wave * wind_strength * mask);
+
+    // 6. Aplicar
+    VERTEX += offset;
+}
+
+void fragment() {
+    vec4 col   = texture(tex_diffuse, UV);
+    vec4 m     = texture(tex_mask, UV);
+    ALBEDO = col.rgb;
+    ALPHA  = m.r;
+}
+
+void light() {
+    float diffuse_factor = pow(4.0, dot(NORMAL, LIGHT)) / 4.0;
+    float sss_factor     = max(-dot(VIEW, LIGHT), 0.0) * 0.5;
+    DIFFUSE_LIGHT  += (diffuse_factor + sss_factor * subsurface_scattering_color) * ATTENUATION * LIGHT_COLOR;
+    SPECULAR_LIGHT *= diffuse_factor;
+}
+"
 
 [resource]
 resource_name = "M_PineTree"
 render_priority = 0
-shader = ExtResource("1_8e13g")
+shader = SubResource("Shader_q1hdr")
+shader_parameter/tex_diffuse = ExtResource("1_bkc36")
+shader_parameter/tex_mask = ExtResource("2_hk14k")
+shader_parameter/subsurface_scattering_color = Color(0, 0.904912, 0.924153, 1)
+shader_parameter/wind_strength = 0.3
+shader_parameter/wind_speed = 1.0
+shader_parameter/wind_scale = 1.0
+shader_parameter/wind_direction = Vector3(1, 0, 0.2)
+shader_parameter/height_start = 0.5
+shader_parameter/height_end = 30.0

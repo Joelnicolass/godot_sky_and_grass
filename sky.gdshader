@@ -7,8 +7,8 @@ uniform sampler2D cloud_shape_sampler : filter_linear_mipmap_anisotropic, repeat
 uniform sampler2D cloud_noise_sampler : filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D cloud_curves;
 
-uniform int clouds_samples : hint_range(8, 32, 8) = 16;
-uniform int shadow_sample : hint_range(1, 4, 1) = 4;
+uniform int clouds_samples = 16;
+uniform int shadow_sample = 4;
 
 uniform float clouds_density : hint_range(0.0, 1.0, 0.1) = 0.5;
 uniform float clouds_scale : hint_range(0.5, 1.5, 0.1) = 1.0;
@@ -113,7 +113,7 @@ vec2 cloud_ray_march(vec3 direction, vec3 sun_direction){
 	float height = 0.03;
 	vec3 sample_point = vec3(0.0, 0.0, 2.0);
 
-	int loop_offset = clouds_samples * 3;
+	int loop_offset = clouds_samples * 1;
 
 	for(int i = loop_offset; i < clouds_samples + loop_offset; i++) {
 		float progress = float(i) / float(clouds_samples);
