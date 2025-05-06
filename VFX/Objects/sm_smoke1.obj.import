@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cbs6u7qd6xpp0"
+path="res://.godot/imported/sm_smoke1.obj-8848efb16dcacd9d19481afc7d9366fd.mesh"
+
+[deps]
+
+files=["res://.godot/imported/sm_smoke1.obj-8848efb16dcacd9d19481afc7d9366fd.mesh"]
+
+source_file="res://VFX/Objects/sm_smoke1.obj"
+dest_files=["res://.godot/imported/sm_smoke1.obj-8848efb16dcacd9d19481afc7d9366fd.mesh", "res://.godot/imported/sm_smoke1.obj-8848efb16dcacd9d19481afc7d9366fd.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

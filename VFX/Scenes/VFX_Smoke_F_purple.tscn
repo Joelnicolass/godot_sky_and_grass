@@ -1,0 +1,65 @@
+[gd_scene load_steps=11 format=3 uid="uid://cnriac7anmbu6"]
+
+[ext_resource type="Texture2D" uid="uid://ctukmkv738b2g" path="res://VFX/Textures/T_smoke_bb1.png" id="1_4n676"]
+[ext_resource type="Gradient" uid="uid://brvglaxxjnkh" path="res://VFX/Textures/gradients/g_yellowSmoke.tres" id="2_6obdg"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kp6uy"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_texture = ExtResource("1_4n676")
+metallic_specular = 1.0
+subsurf_scatter_strength = 0.74
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+proximity_fade_enabled = true
+
+[sub_resource type="Curve" id="Curve_whb6k"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.224638, 1), 0.0, 0.0, 0, 0, Vector2(0.630435, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_rvdhd"]
+texture_mode = 1
+curve = SubResource("Curve_whb6k")
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_svdwv"]
+gradient = ExtResource("2_6obdg")
+use_hdr = true
+
+[sub_resource type="Curve" id="Curve_venwc"]
+_limits = [0.0, 2.0, 0.0, 1.0]
+_data = [Vector2(0, 0.285714), 0.0, 1.15949, 0, 0, Vector2(1, 1.47253), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_md2qy"]
+curve = SubResource("Curve_venwc")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hgukg"]
+particle_flag_rotate_y = true
+emission_shape = 1
+emission_sphere_radius = 0.1
+angle_min = -180.0
+angle_max = 180.0
+direction = Vector3(0, 1, -0.4)
+spread = 0.0
+initial_velocity_min = 1.8
+initial_velocity_max = 2.5
+angular_velocity_min = -20.0
+angular_velocity_max = 50.0
+gravity = Vector3(0, 0, 0)
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_md2qy")
+color_ramp = SubResource("GradientTexture1D_svdwv")
+alpha_curve = SubResource("CurveTexture_rvdhd")
+
+[sub_resource type="QuadMesh" id="QuadMesh_2330d"]
+
+[node name="VFX_Smoke_F_purple" type="GPUParticles3D"]
+material_override = SubResource("StandardMaterial3D_kp6uy")
+amount = 30
+lifetime = 2.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_hgukg")
+draw_pass_1 = SubResource("QuadMesh_2330d")

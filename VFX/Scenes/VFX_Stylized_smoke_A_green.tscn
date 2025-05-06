@@ -1,0 +1,59 @@
+[gd_scene load_steps=12 format=3 uid="uid://drvknqp36n1wa"]
+
+[ext_resource type="Shader" uid="uid://cxs8yy4k6k3uw" path="res://VFX/Shaders/s_stylized_smoke_t1_p.tres" id="1_rsqxp"]
+[ext_resource type="Texture2D" uid="uid://c58fuw3g11jq0" path="res://VFX/Textures/T_PerlinNoise_Tiled11_inv.png" id="2_b8aix"]
+[ext_resource type="ArrayMesh" uid="uid://cbs6u7qd6xpp0" path="res://VFX/Objects/sm_smoke1.obj" id="3_gmudo"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a3nkp"]
+render_priority = 0
+shader = ExtResource("1_rsqxp")
+shader_parameter/Texture_Scale = Vector2(0.5, 0.5)
+shader_parameter/Disolver_Texture = ExtResource("2_b8aix")
+
+[sub_resource type="Curve" id="Curve_0oafg"]
+_data = [Vector2(0, 0.43956), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.141122, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_cdx35"]
+texture_mode = 1
+curve = SubResource("Curve_0oafg")
+
+[sub_resource type="Gradient" id="Gradient_7sht6"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.12963, 0.49537, 1)
+colors = PackedColorArray(1.4, 1.4, 0.6, 1, 0.439471, 0.792563, 0.0761915, 1, 0.171022, 0.32804, 1.92523e-07, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_8k2oa"]
+gradient = SubResource("Gradient_7sht6")
+use_hdr = true
+
+[sub_resource type="Curve" id="Curve_mrixy"]
+_data = [Vector2(0, 0.296703), 0.0, 0.0744811, 0, 0, Vector2(1, 0.67033), -0.124713, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_y4bai"]
+curve = SubResource("Curve_mrixy")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_225be"]
+particle_flag_rotate_y = true
+emission_shape = 1
+emission_sphere_radius = 0.5
+angle_min = -180.0
+angle_max = 180.0
+direction = Vector3(-0.4, 1, 0)
+spread = 0.0
+initial_velocity_min = 3.0
+initial_velocity_max = 4.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.6
+scale_max = 0.8
+scale_curve = SubResource("CurveTexture_y4bai")
+color_ramp = SubResource("GradientTexture1D_8k2oa")
+alpha_curve = SubResource("CurveTexture_cdx35")
+
+[node name="VFX_StylizedSmoke_A_green" type="GPUParticles3D"]
+material_override = SubResource("ShaderMaterial_a3nkp")
+amount = 20
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_225be")
+draw_pass_1 = ExtResource("3_gmudo")

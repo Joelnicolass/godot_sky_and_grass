@@ -1,0 +1,46 @@
+[gd_resource type="VisualShader" load_steps=5 format=3 uid="uid://02tua3ybjvqj"]
+
+[ext_resource type="Texture2D" uid="uid://73adbs6meanw" path="res://T_PineBranch_SubsurfaceColor.png" id="1_jrq4t"]
+[ext_resource type="Texture2D" uid="uid://c7521iwfpl8ec" path="res://T_PineBranch_Mask.png" id="2_qecdk"]
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_pqv8l"]
+texture = ExtResource("1_jrq4t")
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_jrq4t"]
+expanded_output_ports = [0]
+texture = ExtResource("2_qecdk")
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_disabled, diffuse_lambert, specular_schlick_ggx, depth_prepass_alpha;
+
+uniform sampler2D tex_frg_3;
+uniform sampler2D tex_frg_4;
+
+
+
+void fragment() {
+// Texture2D:3
+	vec4 n_out3p0 = texture(tex_frg_3, UV);
+
+
+// Texture2D:4
+	vec4 n_out4p0 = texture(tex_frg_4, UV);
+
+
+// Output:0
+	ALBEDO = vec3(n_out3p0.xyz);
+	ALPHA = n_out4p0.x;
+
+
+}
+"
+graph_offset = Vector2(-11.6581, 96.7532)
+modes/cull = 2
+flags/depth_prepass_alpha = true
+nodes/fragment/0/position = Vector2(1120, 280)
+nodes/fragment/3/node = SubResource("VisualShaderNodeTexture_pqv8l")
+nodes/fragment/3/position = Vector2(-1240, 260)
+nodes/fragment/4/node = SubResource("VisualShaderNodeTexture_jrq4t")
+nodes/fragment/4/position = Vector2(-1300, 900)
+nodes/fragment/connections = PackedInt32Array(3, 0, 0, 0, 4, 0, 0, 1)

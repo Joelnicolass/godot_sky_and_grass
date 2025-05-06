@@ -1,0 +1,80 @@
+[gd_scene load_steps=14 format=3 uid="uid://4k4lwy26c2sc"]
+
+[ext_resource type="Shader" uid="uid://cxs8yy4k6k3uw" path="res://VFX/Shaders/s_stylized_smoke_t1_p.tres" id="1_bmbj1"]
+[ext_resource type="Texture2D" uid="uid://c58fuw3g11jq0" path="res://VFX/Textures/T_PerlinNoise_Tiled11_inv.png" id="2_qp3ly"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u1jwg"]
+render_priority = 0
+shader = ExtResource("1_bmbj1")
+shader_parameter/Texture_Scale = Vector2(0.3, 0.5)
+shader_parameter/Disolver_Texture = ExtResource("2_qp3ly")
+
+[sub_resource type="Curve" id="Curve_oldqe"]
+_data = [Vector2(0, 0.571429), 0.0, 0.311781, 0, 0, Vector2(1, 1), 0.141122, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_y7l8j"]
+texture_mode = 1
+curve = SubResource("Curve_oldqe")
+
+[sub_resource type="Gradient" id="Gradient_icvb8"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.263889, 0.597222)
+colors = PackedColorArray(1, 1, 1, 1, 0.355314, 0.355314, 0.355314, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_v2cg3"]
+gradient = SubResource("Gradient_icvb8")
+
+[sub_resource type="Curve" id="Curve_6khwu"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -3.20028, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_r1vdb"]
+curve = SubResource("Curve_6khwu")
+
+[sub_resource type="Curve" id="Curve_t0kxa"]
+_data = [Vector2(0, 0.252747), 0.0, 1.4704, 0, 0, Vector2(1, 0.67033), -0.124713, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ouhpg"]
+curve = SubResource("Curve_t0kxa")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_til14"]
+particle_flag_rotate_y = true
+emission_shape = 6
+emission_ring_axis = Vector3(0, 1, 0)
+emission_ring_height = 0.0
+emission_ring_radius = 0.5
+emission_ring_inner_radius = 0.5
+emission_ring_cone_angle = 90.0
+angle_min = -180.0
+angle_max = 180.0
+direction = Vector3(0, 1, 0)
+spread = 0.0
+angular_velocity_min = -120.0
+angular_velocity_max = 300.0
+radial_velocity_min = 6.99998
+radial_velocity_max = 11.0
+radial_velocity_curve = SubResource("CurveTexture_r1vdb")
+gravity = Vector3(0, 0, 0)
+scale_max = 1.3
+scale_curve = SubResource("CurveTexture_ouhpg")
+color_ramp = SubResource("GradientTexture1D_v2cg3")
+alpha_curve = SubResource("CurveTexture_y7l8j")
+
+[sub_resource type="SphereMesh" id="SphereMesh_ydj56"]
+radius = 1.5
+height = 3.0
+radial_segments = 12
+rings = 6
+
+[node name="VFX_StylizedSmoke_ring1" type="GPUParticles3D"]
+material_override = SubResource("ShaderMaterial_u1jwg")
+emitting = false
+amount = 30
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_til14")
+draw_pass_1 = SubResource("SphereMesh_ydj56")

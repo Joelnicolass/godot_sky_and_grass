@@ -1,94 +1,18 @@
-[gd_scene load_steps=23 format=3 uid="uid://cddlbjcwk5mqt"]
+[gd_scene load_steps=16 format=3 uid="uid://cddlbjcwk5mqt"]
 
-[ext_resource type="Shader" uid="uid://hbqxu6asnxcb" path="res://sky.gdshader" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://diewyeacbwpm0" path="res://fps.gd" id="2_0xm2m"]
+[ext_resource type="Environment" uid="uid://cwpqum80j3ijf" path="res://environment_sky_clouds.tres" id="2_kek77"]
 [ext_resource type="Script" uid="uid://b47pdgbhlwrmp" path="res://mesh_instance_3d.gd" id="2_w48qg"]
 [ext_resource type="Script" uid="uid://miqfhrrh5v12" path="res://grass_controller.gd" id="5_lquwl"]
 [ext_resource type="ArrayMesh" uid="uid://durmih4ckgmdg" path="res://grass_high.obj" id="6_7mycd"]
 [ext_resource type="PackedScene" uid="uid://b6crtd6ejj842" path="res://map_her.tscn" id="7_5vw27"]
 [ext_resource type="Shader" uid="uid://b0orpsee3mlp2" path="res://grass_new.gdshader" id="7_272bh"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_ig7tw"]
-frequency = 0.0098
-offset = Vector3(-228.86, 0, 0)
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0xm2m"]
-noise = SubResource("FastNoiseLite_ig7tw")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_h2yge"]
-frequency = 0.0021
-offset = Vector3(-172.83, 0, 0)
-fractal_type = 2
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_1bvp3"]
-width = 1024
-height = 1024
-in_3d_space = true
-seamless = true
-seamless_blend_skirt = 0.795
-noise = SubResource("FastNoiseLite_h2yge")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_0xm2m"]
-noise_type = 3
-frequency = 0.0029
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_h2yge"]
-in_3d_space = true
-seamless = true
-noise = SubResource("FastNoiseLite_0xm2m")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0xm2m"]
-shader = ExtResource("1_ig7tw")
-shader_parameter/cloud_shape_sampler = SubResource("NoiseTexture2D_1bvp3")
-shader_parameter/cloud_noise_sampler = SubResource("NoiseTexture2D_0xm2m")
-shader_parameter/clouds_samples = 16
-shader_parameter/shadow_sample = 4
-shader_parameter/clouds_density = 0.5
-shader_parameter/clouds_scale = 1.0
-shader_parameter/clouds_smoothness = 0.1
-shader_parameter/clouds_light_color = Color(0.453393, 0.596928, 0.639059, 1)
-shader_parameter/clouds_shadow_intensity = 1.0
-shader_parameter/high_clouds_sampler = SubResource("NoiseTexture2D_h2yge")
-shader_parameter/high_clouds_density = 1.0
-shader_parameter/top_color = Color(0.635294, 0.258824, 0.411765, 1)
-shader_parameter/bottom_color = Color(0.34902, 0.431373, 0.431373, 1)
-shader_parameter/sun_scatter = Color(0.854902, 1, 1, 1)
-shader_parameter/astro_tint = Color(1, 1, 1, 1)
-shader_parameter/astro_scale = 10.0
-shader_parameter/astro_intensity = 1.0
-shader_parameter/stars_intensity = 0.0
-shader_parameter/shooting_stars_intensity = 0.0
-shader_parameter/shooting_star_tint = Color(0, 0, 0, 1)
-
-[sub_resource type="Sky" id="Sky_h2yge"]
-sky_material = SubResource("ShaderMaterial_0xm2m")
-
-[sub_resource type="Environment" id="Environment_1bvp3"]
-background_mode = 2
-sky = SubResource("Sky_h2yge")
-ambient_light_source = 3
-reflected_light_source = 2
-ssao_enabled = true
-ssao_radius = 0.55
-ssao_intensity = 4.2
-ssao_power = 5.5982
-glow_enabled = true
-glow_normalized = true
-glow_bloom = 0.05
-glow_blend_mode = 1
-fog_enabled = true
-fog_sun_scatter = 1.0
-fog_aerial_perspective = 1.0
-volumetric_fog_enabled = true
-volumetric_fog_density = 0.0144
-volumetric_fog_albedo = Color(0.928361, 0.743612, 7.70092e-07, 1)
-volumetric_fog_emission = Color(0.288444, 0.412876, 0.392115, 1)
-volumetric_fog_anisotropy = 0.7
-volumetric_fog_sky_affect = 0.2
+[ext_resource type="PackedScene" uid="uid://bhpk77f7fkjdj" path="res://VFX/Scenes/VFX_Smoke_C_blue.tscn" id="9_4c57u"]
+[ext_resource type="PackedScene" uid="uid://dira3eqmcp5qv" path="res://pine.tscn" id="9_kek77"]
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_7mycd"]
 dof_blur_far_enabled = true
-dof_blur_far_distance = 70.0
+dof_blur_far_distance = 60.0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_272bh"]
 
@@ -117,18 +41,19 @@ shader_parameter/subsurface_scattering_color = Color(1, 0.75, 0.1, 1)
 script = ExtResource("5_lquwl")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_1bvp3")
+environment = ExtResource("2_kek77")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.532521, 0.434755, 0.72623, 0.6896, 0.720356, 0.0744228, -0.490789, 0.54044, -0.683411, -10.9816, 41.0888, 10.7222)
-light_color = Color(1, 0.766187, 0.569705, 1)
-light_angular_distance = 15.04
+transform = Transform3D(-0.182465, 0.82959, -0.52772, -0.730528, 0.244841, 0.637481, 0.658056, 0.501832, 0.561362, -10.9816, 41.0888, 10.7222)
+light_color = Color(0.944016, 0.539249, 4.62055e-06, 1)
+light_indirect_energy = 12.399
+light_angular_distance = 10.0
 shadow_enabled = true
 directional_shadow_mode = 0
 
 [node name="Player" type="CharacterBody3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(0.939788, 0, -0.341758, 0, 1, 0, 0.341758, 0, 0.939788, 1.66064, 5.892, -14.4803)
+transform = Transform3D(0.939788, 0, -0.341758, 0, 1, 0, 0.341758, 0, 0.939788, -4.02699, 5.892, 21.0651)
 script = ExtResource("2_w48qg")
 
 [node name="Camera3D" type="Camera3D" parent="Player"]
@@ -182,3 +107,15 @@ offset_right = 502.0
 offset_bottom = 472.0
 
 [node name="map_fbx" parent="." instance=ExtResource("7_5vw27")]
+
+[node name="SM_PineTree_02" parent="." instance=ExtResource("9_kek77")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.265, 2.3161, -10.941)
+
+[node name="SM_PineTree_03" parent="." instance=ExtResource("9_kek77")]
+transform = Transform3D(1.4, 0, 0, 0, 1.4, 0, 0, 0, 1.4, 5.39749, 2.78926, -10.1647)
+
+[node name="SM_PineTree_01" parent="." instance=ExtResource("9_kek77")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -9.32252, 2.9224, -3.64701)
+
+[node name="VFX_Smoke_C_blue" parent="." instance=ExtResource("9_4c57u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.40064, 3.77727, -1.6793)

@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cccgexbowuln2"]
+
+[ext_resource type="Shader" uid="uid://02tua3ybjvqj" path="res://alpha.tres" id="1_8e13g"]
+
+[resource]
+resource_name = "M_PineTree"
+render_priority = 0
+shader = ExtResource("1_8e13g")

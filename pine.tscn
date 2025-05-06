@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://dira3eqmcp5qv"]
+
+[ext_resource type="PackedScene" uid="uid://0uk0isiasqmy" path="res://SM_PineTree_01.fbx" id="1_h82ma"]
+[ext_resource type="Material" uid="uid://cccgexbowuln2" path="res://M_PineTree.tres" id="2_q7hu3"]
+
+[node name="SM_PineTree_01" instance=ExtResource("1_h82ma")]
+
+[node name="SM_PineTree_01" parent="." index="0"]
+surface_material_override/0 = ExtResource("2_q7hu3")

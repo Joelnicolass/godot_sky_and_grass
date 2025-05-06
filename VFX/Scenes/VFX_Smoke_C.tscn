@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=3 uid="uid://cn4ptoqsuyxed"]
+
+[ext_resource type="Texture2D" uid="uid://c7gbxglqs3lqc" path="res://VFX/Textures/T_wispy_smoke_K1s.png" id="1_kcb2l"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0elex"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_texture = ExtResource("1_kcb2l")
+metallic_specular = 1.0
+subsurf_scatter_strength = 0.74
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 8
+particles_anim_v_frames = 8
+particles_anim_loop = false
+proximity_fade_enabled = true
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_i1qx2"]
+particle_flag_rotate_y = true
+emission_shape = 1
+emission_sphere_radius = 0.1
+angle_min = -180.0
+angle_max = 180.0
+direction = Vector3(0, 1, -0.4)
+spread = 0.0
+initial_velocity_min = 1.8
+initial_velocity_max = 2.3
+angular_velocity_min = -50.0
+angular_velocity_max = 50.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.9
+scale_max = 2.2
+anim_speed_min = 1.0
+anim_speed_max = 1.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_2330d"]
+
+[node name="VFX_Smoke_C" type="GPUParticles3D"]
+material_override = SubResource("StandardMaterial3D_0elex")
+amount = 20
+lifetime = 2.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_i1qx2")
+draw_pass_1 = SubResource("QuadMesh_2330d")

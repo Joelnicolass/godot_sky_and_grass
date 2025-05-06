@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=3 uid="uid://ctfdakvxmcgh3"]
+
+[ext_resource type="Texture2D" uid="uid://c7gbxglqs3lqc" path="res://VFX/Textures/T_wispy_smoke_K1s.png" id="1_ohsjv"]
+[ext_resource type="Gradient" uid="uid://dd3sdylato54b" path="res://VFX/Textures/gradients/g_fire_smoke.tres" id="2_cagme"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0elex"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_texture = ExtResource("1_ohsjv")
+metallic_specular = 1.0
+subsurf_scatter_strength = 0.74
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 8
+particles_anim_v_frames = 8
+particles_anim_loop = false
+proximity_fade_enabled = true
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4d28k"]
+gradient = ExtResource("2_cagme")
+use_hdr = true
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_t506h"]
+particle_flag_rotate_y = true
+emission_shape = 1
+emission_sphere_radius = 0.1
+angle_min = -180.0
+angle_max = 180.0
+direction = Vector3(0, 1, -0.4)
+spread = 0.0
+initial_velocity_min = 2.0
+initial_velocity_max = 3.0
+angular_velocity_min = -50.0
+angular_velocity_max = 50.0
+gravity = Vector3(0, 0, 0)
+scale_min = 2.0
+scale_max = 3.0
+color = Color(1.4, 1.4, 1.4, 1)
+color_ramp = SubResource("GradientTexture1D_4d28k")
+hue_variation_min = -2.23517e-08
+hue_variation_max = -2.23517e-08
+anim_speed_min = 1.0
+anim_speed_max = 1.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_2330d"]
+
+[node name="VFX_Smoke_C_fired" type="GPUParticles3D"]
+material_override = SubResource("StandardMaterial3D_0elex")
+amount = 20
+lifetime = 2.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_t506h")
+draw_pass_1 = SubResource("QuadMesh_2330d")

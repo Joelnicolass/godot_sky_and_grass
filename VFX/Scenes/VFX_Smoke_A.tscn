@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=3 uid="uid://cv0u43rpk4mp1"]
+
+[ext_resource type="Texture2D" uid="uid://brnp67jnwwro6" path="res://VFX/Textures/T_smoke_K97.png" id="1_2jyjn"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v1g0s"]
+transparency = 1
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_texture = ExtResource("1_2jyjn")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 8
+particles_anim_v_frames = 8
+particles_anim_loop = false
+proximity_fade_enabled = true
+
+[sub_resource type="Curve" id="Curve_cwjp4"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_1703y"]
+curve = SubResource("Curve_cwjp4")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3msox"]
+particle_flag_rotate_y = true
+emission_shape = 1
+emission_sphere_radius = 0.1
+angle_min = -180.0
+angle_max = 180.0
+direction = Vector3(0, 1, -0.4)
+spread = 0.0
+initial_velocity_min = 1.0
+initial_velocity_max = 2.5
+radial_velocity_min = -2.23517e-05
+radial_velocity_max = -2.23517e-05
+gravity = Vector3(0, 0, 0)
+scale_min = 1.5
+scale_max = 4.0
+scale_curve = SubResource("CurveTexture_1703y")
+hue_variation_min = -2.23517e-08
+hue_variation_max = -2.23517e-08
+anim_speed_min = 1.0
+anim_speed_max = 1.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_qibnb"]
+
+[node name="VFX_Smoke_A" type="GPUParticles3D"]
+material_override = SubResource("StandardMaterial3D_v1g0s")
+cast_shadow = 0
+amount = 20
+lifetime = 2.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_3msox")
+draw_pass_1 = SubResource("QuadMesh_qibnb")

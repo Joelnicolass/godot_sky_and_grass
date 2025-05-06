@@ -1,0 +1,55 @@
+[gd_scene load_steps=12 format=3 uid="uid://wmot5xni6r77"]
+
+[ext_resource type="Shader" uid="uid://cxs8yy4k6k3uw" path="res://VFX/Shaders/s_stylized_smoke_t1_p.tres" id="1_pqq46"]
+[ext_resource type="Texture2D" uid="uid://c58fuw3g11jq0" path="res://VFX/Textures/T_PerlinNoise_Tiled11_inv.png" id="2_thakm"]
+[ext_resource type="ArrayMesh" uid="uid://cbs6u7qd6xpp0" path="res://VFX/Objects/sm_smoke1.obj" id="3_so14a"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r4bv7"]
+render_priority = 0
+shader = ExtResource("1_pqq46")
+shader_parameter/Texture_Scale = Vector2(0.5, 0.5)
+shader_parameter/Disolver_Texture = ExtResource("2_thakm")
+
+[sub_resource type="Curve" id="Curve_chc3r"]
+_data = [Vector2(0, 0.43956), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.141122, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_pvaoy"]
+texture_mode = 1
+curve = SubResource("Curve_chc3r")
+
+[sub_resource type="Gradient" id="Gradient_cnm1c"]
+colors = PackedColorArray(0.0475577, 0.0475576, 0.0475576, 1, 0.306923, 0.306923, 0.306923, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_jwrka"]
+gradient = SubResource("Gradient_cnm1c")
+
+[sub_resource type="Curve" id="Curve_l02nx"]
+_data = [Vector2(0, 0.252747), 0.0, 0.0744811, 0, 0, Vector2(1, 0.67033), -0.124713, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_hpyrp"]
+curve = SubResource("Curve_l02nx")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6i4q8"]
+particle_flag_rotate_y = true
+emission_shape = 1
+emission_sphere_radius = 0.5
+angle_min = -180.0
+angle_max = 180.0
+direction = Vector3(-0.3, 1, 0)
+spread = 0.0
+initial_velocity_min = 3.0
+initial_velocity_max = 4.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.8
+scale_curve = SubResource("CurveTexture_hpyrp")
+color_ramp = SubResource("GradientTexture1D_jwrka")
+alpha_curve = SubResource("CurveTexture_pvaoy")
+
+[node name="VFX_StylizedSmoke_A_black" type="GPUParticles3D"]
+material_override = SubResource("ShaderMaterial_r4bv7")
+amount = 20
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_6i4q8")
+draw_pass_1 = ExtResource("3_so14a")

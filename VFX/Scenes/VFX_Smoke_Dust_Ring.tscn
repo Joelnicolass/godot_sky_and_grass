@@ -1,0 +1,88 @@
+[gd_scene load_steps=17 format=3 uid="uid://dvyq137rgwo7e"]
+
+[ext_resource type="Shader" uid="uid://dt2cutmf8drgf" path="res://VFX/Shaders/s_smoketypeG1X.tres" id="1_8r3n1"]
+[ext_resource type="Texture2D" uid="uid://cixjr1mrqvafh" path="res://VFX/Textures/T_VFX_simple_1R.png" id="2_e5iij"]
+[ext_resource type="Texture2D" uid="uid://du4o44wboryvw" path="res://VFX/Textures/T_Noise_001R.png" id="3_ibc8h"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0tsrb"]
+render_priority = 1
+shader = ExtResource("1_8r3n1")
+shader_parameter/Color = Color(1, 0.6, 0.403, 1)
+shader_parameter/Scale = Vector2(1, 1)
+shader_parameter/Speed = Vector2(0.2, 0.2)
+shader_parameter/LOD_min = 0.0
+shader_parameter/LOD_max = 8.0
+shader_parameter/smoke_texture = ExtResource("3_ibc8h")
+shader_parameter/smake_mask = ExtResource("2_e5iij")
+shader_parameter/Enable_Proximity_Fade = true
+shader_parameter/ProximityFade = 1.0
+
+[sub_resource type="Curve" id="Curve_vv8op"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_bdkgd"]
+texture_mode = 1
+curve = SubResource("Curve_vv8op")
+
+[sub_resource type="Curve" id="Curve_4fycs"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.34938), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_xipxp"]
+curve = SubResource("Curve_4fycs")
+
+[sub_resource type="Gradient" id="Gradient_cs6r0"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_bk2cf"]
+gradient = SubResource("Gradient_cs6r0")
+
+[sub_resource type="Curve" id="Curve_n4lds"]
+_data = [Vector2(0.0409836, 1), 0.0, -4.41629, 0, 0, Vector2(0.352459, 0.263736), -0.603297, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_whaog"]
+curve = SubResource("Curve_n4lds")
+
+[sub_resource type="Curve" id="Curve_caxij"]
+_data = [Vector2(0, 0.442326), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.00943, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_lqiuf"]
+curve = SubResource("Curve_caxij")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fi12k"]
+particle_flag_rotate_y = true
+emission_shape = 6
+emission_ring_axis = Vector3(0, 1, 0)
+emission_ring_height = 0.0
+emission_ring_radius = 0.3
+emission_ring_inner_radius = 0.3
+emission_ring_cone_angle = 90.0
+angle_min = -180.0
+angle_max = 180.0
+angular_velocity_min = -300.0
+angular_velocity_max = -1.60933e-05
+angular_velocity_curve = SubResource("CurveTexture_xipxp")
+radial_velocity_min = 9.99998
+radial_velocity_max = 9.99998
+radial_velocity_curve = SubResource("CurveTexture_whaog")
+gravity = Vector3(0, 1, 0)
+damping_max = 2.0
+scale_min = 7.0
+scale_max = 8.0
+scale_curve = SubResource("CurveTexture_lqiuf")
+color_ramp = SubResource("GradientTexture1D_bk2cf")
+alpha_curve = SubResource("CurveTexture_bdkgd")
+
+[sub_resource type="QuadMesh" id="QuadMesh_c2a8g"]
+
+[node name="VFX_Smoke_Dust_ring" type="GPUParticles3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0670767, 0.731823, 0.0972776)
+material_override = SubResource("ShaderMaterial_0tsrb")
+cast_shadow = 0
+amount = 35
+explosiveness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_fi12k")
+draw_pass_1 = SubResource("QuadMesh_c2a8g")

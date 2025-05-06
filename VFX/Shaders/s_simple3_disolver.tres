@@ -1,0 +1,118 @@
+[gd_resource type="VisualShader" load_steps=10 format=3 uid="uid://cl8r0wee4viem"]
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_bdb08"]
+parameter_name = "Color"
+default_value_enabled = true
+
+[sub_resource type="VisualShaderNodeSmoothStep" id="VisualShaderNodeSmoothStep_puyvc"]
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_vbihq"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeProximityFade" id="VisualShaderNodeProximityFade_oktq6"]
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_1ucrs"]
+parameter_name = "Proximity_Fade"
+default_value_enabled = true
+default_value = 0.5
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_tp8cn"]
+expanded_output_ports = [0]
+input_name = "color"
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_yodj2"]
+parameter_name = "texture_Main"
+texture_type = 1
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_32n2n"]
+expanded_output_ports = [0]
+source = 5
+texture_type = 1
+
+[sub_resource type="VisualShaderNodeBillboard" id="VisualShaderNodeBillboard_2mkhg"]
+billboard_type = 0
+keep_scale = true
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_disabled, diffuse_lambert, specular_schlick_ggx, unshaded, shadows_disabled, fog_disabled;
+
+uniform sampler2D texture_Main : source_color;
+uniform float Proximity_Fade = 0.5;
+uniform sampler2D depth_tex_frg_14 : hint_depth_texture;
+
+
+
+void vertex() {
+// GetBillboardMatrix:2
+	// Node is disabled and code is not generated.
+}
+
+void fragment() {
+// Input:2
+	vec4 n_out2p0 = COLOR;
+	float n_out2p4 = n_out2p0.a;
+
+
+	vec4 n_out4p0;
+// Texture2D:4
+	n_out4p0 = texture(texture_Main, UV);
+	float n_out4p1 = n_out4p0.r;
+
+
+// SmoothStep:12
+	float n_in12p1 = 1.00000;
+	float n_out12p0 = smoothstep(n_out2p4, n_in12p1, n_out4p1);
+
+
+// FloatParameter:15
+	float n_out15p0 = Proximity_Fade;
+
+
+	float n_out14p0;
+// ProximityFade:14
+	{
+		float __depth_tex = texture(depth_tex_frg_14, SCREEN_UV).r;
+		vec4 __depth_world_pos = INV_PROJECTION_MATRIX * vec4(SCREEN_UV * 2.0 - 1.0, __depth_tex, 1.0);
+		__depth_world_pos.xyz /= __depth_world_pos.w;
+		n_out14p0 = clamp(1.0 - smoothstep(__depth_world_pos.z + n_out15p0, __depth_world_pos.z, VERTEX.z), 0.0, 1.0);
+	}
+
+
+// FloatOp:13
+	float n_out13p0 = n_out12p0 * n_out14p0;
+
+
+// Output:0
+	ALBEDO = vec3(n_out2p0.xyz);
+	ALPHA = n_out13p0;
+
+
+}
+"
+graph_offset = Vector2(-179.461, 253.554)
+modes/cull = 2
+flags/unshaded = true
+flags/shadows_disabled = true
+flags/fog_disabled = true
+nodes/vertex/2/node = SubResource("VisualShaderNodeBillboard_2mkhg")
+nodes/vertex/2/position = Vector2(0, 340)
+nodes/vertex/connections = PackedInt32Array(2, 0, 0, 10)
+nodes/fragment/0/position = Vector2(940, 140)
+nodes/fragment/2/node = SubResource("VisualShaderNodeInput_tp8cn")
+nodes/fragment/2/position = Vector2(-280, 260)
+nodes/fragment/3/node = SubResource("VisualShaderNodeTexture2DParameter_yodj2")
+nodes/fragment/3/position = Vector2(-400, 560)
+nodes/fragment/4/node = SubResource("VisualShaderNodeTexture_32n2n")
+nodes/fragment/4/position = Vector2(-60, 520)
+nodes/fragment/10/node = SubResource("VisualShaderNodeColorParameter_bdb08")
+nodes/fragment/10/position = Vector2(-80, -60)
+nodes/fragment/12/node = SubResource("VisualShaderNodeSmoothStep_puyvc")
+nodes/fragment/12/position = Vector2(280, 480)
+nodes/fragment/13/node = SubResource("VisualShaderNodeFloatOp_vbihq")
+nodes/fragment/13/position = Vector2(728.447, 662.584)
+nodes/fragment/14/node = SubResource("VisualShaderNodeProximityFade_oktq6")
+nodes/fragment/14/position = Vector2(340, 780)
+nodes/fragment/15/node = SubResource("VisualShaderNodeFloatParameter_1ucrs")
+nodes/fragment/15/position = Vector2(40, 780)
+nodes/fragment/connections = PackedInt32Array(3, 0, 4, 2, 4, 1, 12, 2, 2, 4, 12, 0, 2, 0, 0, 0, 12, 0, 13, 0, 13, 0, 0, 1, 15, 0, 14, 0, 14, 0, 13, 1)

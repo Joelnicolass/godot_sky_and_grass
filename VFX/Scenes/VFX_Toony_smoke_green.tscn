@@ -1,0 +1,64 @@
+[gd_scene load_steps=13 format=3 uid="uid://blsncj007vhk3"]
+
+[ext_resource type="Shader" uid="uid://cb3y8ejyuuhn3" path="res://VFX/Shaders/s_simple_wmask.tres" id="1_nukf8"]
+[ext_resource type="Texture2D" uid="uid://dwrhoyfs10hb0" path="res://VFX/Textures/T_VFX_sSmoke.jpg" id="2_g45ku"]
+[ext_resource type="Texture2D" uid="uid://b72jwrmxaksvc" path="res://VFX/Textures/T_VFX_sSmoke_mask1.jpg" id="3_2briq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xvyga"]
+render_priority = 1
+shader = ExtResource("1_nukf8")
+shader_parameter/Main_Texture = ExtResource("2_g45ku")
+shader_parameter/Texture_Power = 0.8
+shader_parameter/Mask_Texture = ExtResource("3_2briq")
+shader_parameter/Proximity_Fade = 0.5
+
+[sub_resource type="Curve" id="Curve_rmv6g"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.177165, 1), 0.0, 0.0, 0, 0, Vector2(0.508197, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_5r4wg"]
+texture_mode = 1
+curve = SubResource("Curve_rmv6g")
+
+[sub_resource type="Gradient" id="Gradient_1anoq"]
+colors = PackedColorArray(0.0564804, 0.106145, 0.0156542, 1, 1, 1, 0.09, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_teu2k"]
+gradient = SubResource("Gradient_1anoq")
+
+[sub_resource type="Curve" id="Curve_ihmcu"]
+_data = [Vector2(0, 0.21978), 0.0, 2.17857, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_v0k81"]
+curve = SubResource("Curve_ihmcu")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5fwxd"]
+emission_shape = 1
+emission_sphere_radius = 0.5
+angle_min = -180.0
+angle_max = 180.0
+direction = Vector3(0, 1, 0)
+spread = 0.0
+initial_velocity_min = 4.0
+initial_velocity_max = 6.0
+angular_velocity_min = 100.0
+angular_velocity_max = 300.0
+gravity = Vector3(0, 0, 0)
+damping_min = 0.8
+damping_max = 1.5
+scale_min = 0.9
+scale_max = 1.5
+scale_curve = SubResource("CurveTexture_v0k81")
+color = Color(1.1, 1.2, 1.3, 1)
+color_ramp = SubResource("GradientTexture1D_teu2k")
+alpha_curve = SubResource("CurveTexture_5r4wg")
+
+[sub_resource type="QuadMesh" id="QuadMesh_8t4a1"]
+
+[node name="VFX_ToonySmoke_green" type="GPUParticles3D"]
+material_override = SubResource("ShaderMaterial_xvyga")
+amount = 30
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_5fwxd")
+draw_pass_1 = SubResource("QuadMesh_8t4a1")

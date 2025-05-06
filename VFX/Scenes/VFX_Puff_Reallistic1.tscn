@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3 uid="uid://chg52jgockkvt"]
+
+[ext_resource type="Texture2D" uid="uid://c0foehob0bivl" path="res://VFX/Textures/T_VFX_Gas22.png" id="1_2cfyr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pcpwc"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_texture = ExtResource("1_2cfyr")
+disable_receive_shadows = true
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 4
+particles_anim_loop = false
+proximity_fade_enabled = true
+proximity_fade_distance = 0.5
+
+[sub_resource type="Curve" id="Curve_b7m4u"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.129534, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_mnl6j"]
+texture_mode = 1
+curve = SubResource("Curve_b7m4u")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_f1ljq"]
+emission_shape = 1
+emission_sphere_radius = 0.5
+angle_min = -180.0
+angle_max = 180.0
+angular_velocity_max = 100.0
+radial_velocity_min = 1.0
+radial_velocity_max = 1.0
+gravity = Vector3(0, 0, 0)
+color = Color(0.550257, 0.562116, 0.53844, 1)
+alpha_curve = SubResource("CurveTexture_mnl6j")
+anim_speed_min = 1.0
+anim_speed_max = 1.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_hjsf8"]
+
+[node name="VFX_Puff_Reallistic1" type="GPUParticles3D"]
+material_override = SubResource("StandardMaterial3D_pcpwc")
+emitting = false
+amount = 30
+lifetime = 0.8
+one_shot = true
+explosiveness = 0.8
+process_material = SubResource("ParticleProcessMaterial_f1ljq")
+draw_pass_1 = SubResource("QuadMesh_hjsf8")
