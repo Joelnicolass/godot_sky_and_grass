@@ -4,10 +4,12 @@
 [ext_resource type="Gradient" uid="uid://cyopswpf7twsm" path="res://VFX/Textures/gradients/g_purpleBlue_smoke.tres" id="2_h4h4d"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0elex"]
+transparency = 3
+alpha_hash_scale = 0.1
+alpha_antialiasing_mode = 0
 vertex_color_use_as_albedo = true
 vertex_color_is_srgb = true
 albedo_texture = ExtResource("1_g3d3b")
-metallic_specular = 1.0
 subsurf_scatter_strength = 0.74
 billboard_mode = 3
 billboard_keep_scale = true
@@ -37,8 +39,8 @@ orbit_velocity_max = 9.49949e-08
 radial_velocity_min = -2.23517e-05
 radial_velocity_max = -2.23517e-05
 gravity = Vector3(0, 0, 0)
-scale_min = 1.7
-scale_max = 3.0
+scale_min = 0.0
+scale_max = 4.0
 color = Color(1.4, 1.4, 1.4, 1)
 color_ramp = SubResource("GradientTexture1D_udcsy")
 hue_variation_min = -2.23517e-08

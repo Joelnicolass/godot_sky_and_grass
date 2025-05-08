@@ -7,8 +7,8 @@ const GRASS_MAT := preload('res://grass_mat_instance.tres')
 
 const RED_THRESHOLD := 0.5
 const GRID_SIZE := 20.0
-const INSTANCE_COUNT_HIGH := 10000
-const INSTANCE_COUNT_LOW := 5000
+const INSTANCE_COUNT_HIGH := 5000
+const INSTANCE_COUNT_LOW := 1000
 
 # radio máximo de jitter en XZ (en metros)
 const JITTER_RADIUS := 0.6
@@ -96,7 +96,8 @@ func _instantiate_in_cell_multimesh(cell: Vector2, mesh: Mesh, max_count: int) -
 	mm.instance_count = max_count
 	mmi.multimesh = mm
 	mmi.material_override = GRASS_MAT
-
+	# desactivar proyección de sombras
+	mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(mmi)
 
 	if not cell_to_vertices.has(cell):
