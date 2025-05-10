@@ -4,8 +4,8 @@
 [ext_resource type="Gradient" uid="uid://cyopswpf7twsm" path="res://VFX/Textures/gradients/g_purpleBlue_smoke.tres" id="2_h4h4d"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0elex"]
-transparency = 3
-alpha_hash_scale = 0.1
+transparency = 2
+alpha_scissor_threshold = 0.5
 alpha_antialiasing_mode = 0
 vertex_color_use_as_albedo = true
 vertex_color_is_srgb = true

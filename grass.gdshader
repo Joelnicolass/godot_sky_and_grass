@@ -9,6 +9,8 @@ uniform sampler2D clump_noise;
 uniform float wind_speed : hint_range(0.0, 5.0) = 1.0;
 uniform sampler2D wind_noise;
 
+uniform float ambient_occlusion_factor: hint_range(0.0, 1.0, 0.01) = 0.3;
+
 group_uniforms GrassColor;
 uniform vec3 base_color : source_color = vec3(0.05,0.2,0.01);
 uniform vec3 tip_color : source_color = vec3(0.5,0.5,0.1);
@@ -123,11 +125,18 @@ void fragment() {
 	ALBEDO = mix(base_color, tip_color, ease_in_quartic(height_factor));
 	ALBEDO *= mix(0.1, 1.0, height_factor*height_factor); // AO
 	// Color becomes more uniform as distance increases
-	ALBEDO = mix(mix(base_color, tip_color, 0.5)*0.5, ALBEDO, fog_factor);
 
 	//AO = mix(0.1, 1.0, height_factor*height_factor); // Note: This looks better but is only visible when shadows are enabled!
 	ROUGHNESS = mix(1.0, 0.4, ease_out_quartic(height_factor));
 	ANISOTROPY = 0.85;
+
+	// Add fake ambient occlusion by darkening the base of the mesh
+	float ao_fallof = pow(UV.y, 5.0);
+	vec3 ao_color = base_color * (1.0 - ambient_occlusion_factor);
+	vec3 color = mix(base_color, tip_color, 1.0 - UV.y);
+
+	//ALBEDO = mix(color, ao_color, ao_fallof);
+	ALBEDO = mix(mix(base_color, tip_color, 0.5) * 0.5, mix(ALBEDO, ao_color, 0.5), fog_factor);
 }
 
 void light() {

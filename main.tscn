@@ -1,10 +1,11 @@
-[gd_scene load_steps=103 format=4 uid="uid://cddlbjcwk5mqt"]
+[gd_scene load_steps=104 format=4 uid="uid://cddlbjcwk5mqt"]
 
 [ext_resource type="Script" uid="uid://diewyeacbwpm0" path="res://fps.gd" id="2_0xm2m"]
 [ext_resource type="Environment" uid="uid://cwpqum80j3ijf" path="res://environment_sky_clouds.tres" id="2_kek77"]
 [ext_resource type="Script" uid="uid://b47pdgbhlwrmp" path="res://mesh_instance_3d.gd" id="2_w48qg"]
 [ext_resource type="Script" uid="uid://miqfhrrh5v12" path="res://grass_controller.gd" id="5_lquwl"]
 [ext_resource type="PackedScene" uid="uid://b6crtd6ejj842" path="res://map_her.tscn" id="7_5vw27"]
+[ext_resource type="PackedScene" uid="uid://y8mwybom805t" path="res://test_map.tscn" id="8_5vw27"]
 [ext_resource type="PackedScene" uid="uid://bhpk77f7fkjdj" path="res://VFX/Scenes/VFX_Smoke_C_blue.tscn" id="9_4c57u"]
 [ext_resource type="PackedScene" uid="uid://dira3eqmcp5qv" path="res://pine.tscn" id="9_kek77"]
 
@@ -1562,16 +1563,17 @@ light_color = Color(0.832408, 0.47286, 1.73271e-06, 1)
 light_energy = 5.0
 light_specular = 3.0
 shadow_enabled = true
-directional_shadow_mode = 0
+directional_shadow_split_1 = 0.0
 
 [node name="Player" type="CharacterBody3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(0.464533, 0, 0.885556, 0, 1, 0, -0.885556, 0, 0.464533, 14.0794, 4.22676, 5.75118)
+transform = Transform3D(0.464533, 0, 0.885556, 0, 1, 0, -0.885556, 0, 0.464533, -52.1731, 26.827, 118.389)
 script = ExtResource("2_w48qg")
 
 [node name="Camera3D" type="Camera3D" parent="Player"]
 transform = Transform3D(0.999261, 0.0382637, 0.00358754, -0.0382637, 0.98184, 0.185814, 0.00358751, -0.185814, 0.982578, -0.394412, 0.769262, 2.21045)
 attributes = SubResource("CameraAttributesPractical_7mycd")
+current = true
 fov = 90.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
@@ -1615,15 +1617,19 @@ offset_right = 502.0
 offset_bottom = 472.0
 
 [node name="map_fbx" parent="." instance=ExtResource("7_5vw27")]
+visible = false
 
 [node name="SM_PineTree_02" parent="." instance=ExtResource("9_kek77")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.265, 2.3161, -10.941)
+visible = false
 
 [node name="SM_PineTree_03" parent="." instance=ExtResource("9_kek77")]
 transform = Transform3D(1.39683, 0.0941244, 0, -0.0941244, 1.39683, 0, 0, 0, 1.4, 5.39749, 2.41594, -10.1647)
+visible = false
 
 [node name="SM_PineTree_01" parent="." instance=ExtResource("9_kek77")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -9.32252, 2.9224, -3.64701)
+visible = false
 
 [node name="Node3D" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.0921, 4.34119, 15.6446)
@@ -1850,6 +1856,7 @@ mesh = SubResource("ArrayMesh_blkrb")
 skeleton = NodePath("")
 
 [node name="Altar" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -68.9002, 20.8004, 84.5384)
 
 [node name="VFX_Smoke_C_blue" parent="Altar" instance=ExtResource("9_4c57u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.594709, 6.26292, 1.46131)
@@ -1868,3 +1875,5 @@ skeleton = NodePath("")
 transform = Transform3D(1.04913, 0, 4.29483, 0, 5.20663, 0, -3.55889, 0, 1.26607, -0.669314, 3.38903, 0.506893)
 mesh = SubResource("ArrayMesh_abqjc")
 skeleton = NodePath("")
+
+[node name="TestMap" parent="." instance=ExtResource("8_5vw27")]

@@ -3,7 +3,7 @@
 [ext_resource type="Shader" uid="uid://dqt64r6y52wt8" path="res://sky_shadertoy.gdshader" id="1_guqeq"]
 
 [sub_resource type="Gradient" id="Gradient_guqeq"]
-offsets = PackedFloat32Array(0, 0.720238)
+offsets = PackedFloat32Array(0, 0.642857)
 colors = PackedColorArray(0, 0, 0, 1, 0.930693, 0.930693, 0.930693, 1)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_ke3m3"]
@@ -24,13 +24,16 @@ offsets = PackedFloat32Array(0, 0.595238)
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_ohxi2"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_e24mj"]
+in_3d_space = true
+seamless = true
+seamless_blend_skirt = 1.0
 color_ramp = SubResource("Gradient_5emth")
 noise = SubResource("FastNoiseLite_ohxi2")
 
 [sub_resource type="Gradient" id="Gradient_205t6"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_r526q"]
-frequency = 0.0194
+frequency = 0.067
 
 [sub_resource type="NoiseTexture3D" id="NoiseTexture3D_sv8pu"]
 width = 8
@@ -47,25 +50,25 @@ shader_parameter/worlnoise = SubResource("NoiseTexture3D_sv8pu")
 shader_parameter/perlworlnoise = SubResource("NoiseTexture3D_kyyvh")
 shader_parameter/weathermap = SubResource("NoiseTexture2D_e24mj")
 shader_parameter/wind_direction = Vector2(1, 0)
-shader_parameter/wind_speed = 8.858
-shader_parameter/_density = 0.054
-shader_parameter/cloud_coverage = 0.321
+shader_parameter/wind_speed = 10.0
+shader_parameter/_density = 0.073
+shader_parameter/cloud_coverage = 0.281
 shader_parameter/_time_offset = 0.0
 shader_parameter/max_steps = 32.0
 shader_parameter/min_steps = 32.0
 shader_parameter/rayleigh = 2.0
-shader_parameter/rayleigh_color = Color(0.000188769, 0.251754, 0.781051, 1)
-shader_parameter/mie = 0.005
-shader_parameter/mie_eccentricity = 0.8
-shader_parameter/mie_color = Color(0.692738, 0.261562, 0, 1)
-shader_parameter/turbidity = 10.0
+shader_parameter/rayleigh_color = Color(0.0576002, 0.360975, 1, 1)
+shader_parameter/mie = 0.001
+shader_parameter/mie_eccentricity = 0.683
+shader_parameter/mie_color = Color(1, 0.294118, 0, 1)
+shader_parameter/turbidity = 313.571
 shader_parameter/sun_disk_scale = 0.0
-shader_parameter/ground_color = Color(0.647635, 0.758592, 1, 1)
+shader_parameter/ground_color = Color(0.00751064, 0.144763, 0.303744, 1)
 shader_parameter/exposure = 0.1
 
 [sub_resource type="Sky" id="Sky_r526q"]
 sky_material = SubResource("ShaderMaterial_205t6")
-radiance_size = 1
+radiance_size = 0
 
 [resource]
 background_mode = 2
@@ -85,11 +88,13 @@ glow_normalized = true
 glow_bloom = 0.1
 glow_blend_mode = 1
 fog_enabled = true
-fog_sun_scatter = 1.0
+fog_sun_scatter = 0.15
 fog_aerial_perspective = 1.0
+fog_sky_affect = 0.5
 volumetric_fog_enabled = true
-volumetric_fog_density = 0.0144
-volumetric_fog_albedo = Color(0.928361, 0.743612, 7.70092e-07, 1)
-volumetric_fog_emission = Color(0.288444, 0.412876, 0.392115, 1)
-volumetric_fog_anisotropy = 0.52
+volumetric_fog_density = 0.02
+volumetric_fog_albedo = Color(0.661286, 0.450946, 0, 1)
+volumetric_fog_emission = Color(2.40654e-08, 0.302472, 0.306091, 1)
+volumetric_fog_anisotropy = 0.4
+volumetric_fog_detail_spread = 0.5
 volumetric_fog_sky_affect = 0.2
